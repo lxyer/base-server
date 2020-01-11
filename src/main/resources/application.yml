@@ -1,0 +1,58 @@
+spring:
+  profiles:
+    active: test
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      enabled: false
+      max-file-size: 536870912000
+      max-request-size: 536870912000
+  thymeleaf:
+    cache: false
+    suffix: .html
+    prefix: classpath:/templates
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+  #邮箱配置
+  mail:
+    host: smtp.exmaiDockerfilel.qq.com
+    username: dongsheng@deepsec.cn
+    password: d65CtJe9MEyuwndu
+    default-encoding: utf-8
+    nickname: 管理员
+
+#设置一个邮件发送人
+lance:
+  mail:
+    sender: dongsheng@deepsec.cn
+server:
+  port: 9050
+  servlet:
+    context-path: /deepsecBankServer
+#  ssl:
+#    key-store: xxx.p12
+#    key-password: 111
+#    key-store-type: PKCS12
+#    ciphers: [ECDHE-RSA-AES256-SHA384]
+knife4j:
+  markdowns: classpath:markdown/*
+  basic:
+  enable: false
+  username: lxyer
+  password: 123456
+
+mybatis:
+  #xml路径
+  mapper-locations: classpath:mapping/*/*.xml
+  #mybatis-plus配置控制台打印完整带参数SQL语句
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #model路径
+  typeAliasesPackage: com.deepsec.notarization.modules.*.entity
+logging:
+  level:
+    com.deepsec.notarization.modules.notarizationapply.borrower.dao : debug

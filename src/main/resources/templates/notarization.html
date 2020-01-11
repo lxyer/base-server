@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+        * {
+            margin: 0;
+        }
+
+        body {
+            width: 594px;
+            padding: 0 145px 0 55px;
+            margin: 0 auto;
+        }
+
+        #main {
+            height: 354px;
+            width: 374px;
+            position: relative;
+            padding-left: 220px;
+        }
+
+        #main div {
+            font-size: 23px;
+            line-height: 80px;
+        }
+
+        .blank {
+            width: 100%;
+            height: 80px;
+        }
+
+        .autograph {
+            position: absolute;
+            bottom: 0px;
+            left: 232px;
+            width: 191px;
+        }
+
+        .autographPosition {
+            position: absolute;
+            bottom: 188px;
+            left: 316px;
+            display: none;
+        }
+
+        .notary {
+            position: absolute;
+            bottom: 166px;
+            left: 316px;
+            height: 136px;
+            width: 272px;
+        }
+
+        .notaryPosition {
+            position: absolute;
+            bottom: 166px;
+            left: 316px;
+            display: none;
+        }
+
+        .title {
+            font-size: 31px;
+            width: 100%;
+            height: 57px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        p {
+            text-indent: 2em;
+            width: 100%;
+            font-size: 23px;
+            line-height: 48px;
+            min-height: 48px;
+            font-weight: 400;
+        }
+    </style>
+</head>
+
+<body style=" font-family:FangSong">
+<div id="div_print">
+    <div class="title">公&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;书</div>
+    <p style="text-align: right">(<span th:text="${year}"/>)京中信内经电证字<span th:text="${cretificateNo}"/>号</p>
+    <p>申请人：</p>
+    <p>贷款人：<span th:text="${lenderName}"/>，营业执照统一社会信用代码：<span th:text="${lenderUSCC}"/>，营业场所：<span
+            th:text="${lenderBusiGround}"/>。</p>
+    <p>负责人：<span th:text="${lenderChargeMan}"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <p>借款人：<span th:text="${borrowerName}"/>，<span th:text="${borrowerSex}"/>，<span th:text="${upperBorrowerBirth}"/>出生，公民身份号码：<span
+            th:text="${borrowerIdNo}"/>。</p>
+    <p>公证事项：赋予《经营快贷借款合同》强制执行效力</p>
+    <p>上述双方当事人于<span th:text="${upperContractSignDate}"/>通过“中国工商银行”手机客户端向我处申请办理双方签署的《经营快贷借款合同》公证，并依法赋予其强制执行效力。</p>
+    <p>经我处审查：</p>
+    <p>1、贷款人<span th:text="${lenderName}"/>系国家依法设立的金融机构，可以办理包括互联网贷款在内的各类金融业务。</p>
+    <p>2、借款人已使用真实身份信息，通过手机短信验证、账户实名验证、人脸识别，在中国工商银行股份有限公司的“中国工商银行”手机客户端完成注册，具有合法的主体资格。
+    </p>
+    <p>3、借款人通过网络向贷款人提出借款申请，贷款人已对该申请予以审核通过。</p>
+    <p>4、借款人通过接收短信验证码并输入后点击“在线公证”、在线阅读《经营快贷借款合同》，在相关页面进行手写签名的方式签署了《经营快贷借款合同》；当日，贷款人签署了《经营快贷借款合同》。根据该合同，借款金额为人民币<span th:text="${loanAmount}"/>元，借款期限为<span
+            th:text="${loanTerm}"/>个月。</p>
+    <p>5、借款人通过网络查看了办理公证的“公证告知”并点击“进行公证”，通过移动端手写签字确认了《公证申请表》、《电子问询记录》、《办理&lt;经营快贷借款合同>赋予强制执行效力公证告知书》、《债务履行核实方式及送达地址确认书》等文件，明确知悉了《经营快贷借款合同》中有关“借款人到期未还款或存在其他违约情况时，贷款人有权向公证机构申请出具《执行证书》并凭本合同的《公证书》和《执行证书》向人民法院申请强制执行，而无须经过诉讼程序。”的法律后果，并通过移动端手写签字输入方式予以确认。
+    </p>
+    <p>6、北京市中信公证处网络赋强公证平台将申请人双方的电子数据进行加密传输、固化、保存，并确保其内容完整、未被更改，对该笔借款业务已形成电子卷宗。</p>
+    <p>
+        7、本公证员对申请人双方所签合同文本、签署合同的过程以及电子数据的加密、传输、固化、保存的全部环节进行了审查，确认借贷双方具有法律规定的民事权利能力和民事行为能力，双方当事人通过网络签订《经营快贷借款合同》的意思表示真实，合同内容具体、明确。借款人自愿按照上述《经营快贷借款合同》的约定向贷款人履行给付义务，包括但不限于借款本金（以实际提款金额为准）、利息及合同约定的其他费用。</p>
+    <p>依据上述事实，兹证明借款人<span th:text="${borrowerName}"/>通过在线阅读《经营快贷借款合同》，接收短信验证码并输入后点击“在线公证”、在相关页面进行手写签名的方式与贷款人<span th:text="${lenderName}"/>于<span th:text="${upperContractSignDate}"/>日签署了《经营快贷借款合同》；双方当事人的签约行为符合《中华人民共和国民法总则》第一百四十三条的规定，合同内容符合《中华人民共和国合同法》的规定；根据《中华人民共和国民事诉讼法》、《中华人民共和国公证法》和《中华人民共和国电子签名法》的规定，自前面的《经营快贷借款合同》生效及该合同项下债权债务形成之日起，本公证书具有强制执行效力。
+    </p>
+    <div class="blank"></div>
+    <p></p>
+<!--    <p>(此页无正文)</p>-->
+    <p></p>
+    <div id="main">
+        <div>北京市中信公证处</div>
+        <p></p>
+        <div>公证员<span style="color: white; ">公证员签名位置</span></div>
+        <p></p>
+        <div><span th:text="${upperDate}"/>
+            <p></p>
+            <p></p>
+            <p><span style="color: white; ">公证处盖章位置</span></p>
+        </div>
+<!--        <img class="notary"-->
+<!--             src="/Users/deepsec/IdeaProjects/notarization/src/main/resources/templates/chenchuxin2.png"/>-->
+<!--        <img class="autograph"-->
+<!--             src="/Users/deepsec/IdeaProjects/notarization/src/main/resources/templates/bjzx_seal.png"/>-->
+        <!--签名左下角位置-->
+        <i class="notaryPosition"></i>
+        <!--印章左下角位置-->
+        <i class="autographPosition"></i>
+    </div>
+</div>
+<!--<input name="print" type="button" id="bt" value="点击打印"/>-->
+</body>
+<!--<script type="text/javascript" src="jquery-1.8.3.min.js"></script>-->
+<!--<script th:inline="javascript">-->
+<!--    (function t() {-->
+<!--        if (($("#main").offset().top) % 1121 - 1121 > -353) {-->
+<!--            // console.log("换行")-->
+<!--            $("#main").before('<div id="main2" style="page-break-after: always;"></div><p>此页无证文</p>');-->
+<!--        } else {-->
+<!--            // console.log("不换行")-->
+<!--        }-->
+<!--    })();-->
+<!--</script>-->
+</html>

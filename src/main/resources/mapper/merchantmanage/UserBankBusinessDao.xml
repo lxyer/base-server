@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.merchantmanage.userbankbusiness.dao.UserBankBusinessDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.merchantmanage.userbankbusiness.entity.UserBankBusinessEntity"
+               id="userBankBusinessMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="bankBusinessId" column="bank_business_id"/>
+        <result property="bankBusinessName" column="bank_business_name"/>
+        <result property="textContent" column="text_content"/>
+        <result property="videoFileId" column="video_file_id"/>
+        <result property="accessStatus" column="access_status"/>
+        <result property="openStatus" column="open_status"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+    </resultMap>
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.merchantmanage.userbankbusiness.entity.UserBankBusinessListEntity"
+               id="userBankBusinessListMap">
+        <result property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="bankBusinessName" column="bank_business_name"/>
+        <result property="textContentStatus" column="text_content_status"/>
+        <result property="videoFileStatus" column="video_file_status"/>
+        <result property="notarizationAmount" column="notarization_amount"/>
+        <result property="implementAmount" column="implement_amount"/>
+        <result property="accessStatus" column="access_status"/>
+        <result property="openStatus" column="open_status"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             user_id ,             user_name ,             bank_business_id ,             bank_business_name ,             text_content ,             video_file_id ,             access_status ,             open_status ,             creator_id ,             editor_id ,             created_time ,             modified_time         </sql>
+
+
+    <select id="queryPage"
+            parameterType="com.lxyer.base.modules.merchantmanage.userbankbusiness.vo.UserBankBusinessSearchVo"
+            resultMap="userBankBusinessListMap">
+        SELECT
+        id ,
+        user_name ,
+        bank_business_name ,
+        CASE
+        WHEN text_content != '' THEN '1'
+        ELSE '0' END AS text_content_status,
+        CASE
+        WHEN video_file_id != '' THEN '1'
+        ELSE '0' END AS video_file_status,
+        (select count(1) from notarization where user_id = user_bank_business.id) as notarization_amount,
+        (select count(1) from notarization where user_id = user_bank_business.id) as implement_amount,
+        access_status ,
+        open_status
+        FROM user_bank_business
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="userName != null">AND `user_name` like concat('%',#{userName},'%')</if>
+        </trim>
+    </select>
+
+
+</mapper>

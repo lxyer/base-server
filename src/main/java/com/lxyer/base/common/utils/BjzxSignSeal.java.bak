@@ -1,0 +1,218 @@
+package com.deepsec.notarization.common.utils;
+
+import com.deepsec.notarization.modules.business.entity2.NpoEntity;
+import com.deepsec.notarization.modules.business.entity2.NpoUserEntity;
+import com.itextpdf.text.pdf.PdfSignatureAppearance;
+import com.itextpdf.text.pdf.security.DigestAlgorithms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.ClassUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
+
+/**
+ * 北京中信公证处公证书签章工具
+ */
+public class BjzxSignSeal {
+
+    private static final Logger logger = LoggerFactory.getLogger(BjzxSignSeal.class.getName());// slf4j日志记录器
+
+    private static String signReason = "电子数据防篡改"; // 签章原因
+
+    public static void main(String[] args) {
+        String pdfFilePath = "D://111.pdf";     // 需要进行签章的pdf
+
+        NpoEntity npoEntity = new NpoEntity();
+        npoEntity.setNpoSeal("/WEB-INF/config/signseal/bjzx/bjzx_seal_area.png");
+        npoEntity.setCa("/config/signseal/bjzx/cfca_bjzx.pfx");
+        npoEntity.setCapwd("cfca1234");
+        npoEntity.setAddr("北京市西城区阜成门外大街2号，万通金融中心4层和5层");
+
+        NpoUserEntity npoUserEntity = new NpoUserEntity();
+        npoUserEntity.setPersonalSeal("/WEB-INF/config/signseal/bjzx/notary/huoyan.png");
+        npoUserEntity.setCa("/config/signseal/bjzx/notary/huoyan.pfx");
+        npoUserEntity.setCapwd("cfca1234");
+
+        try {
+            signNpoSeal(npoEntity, pdfFilePath, "", pdfFilePath);
+            signNotarySeal(npoEntity, npoUserEntity, pdfFilePath, "", pdfFilePath);
+        } catch (UnrecoverableKeyException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 电子公证书(PDF)签章
+     *
+     * @param pdfFilePath 需要签章的PDF文件的路径
+     */
+    public static void signSeal(NpoEntity npoEntity, NpoUserEntity npoUserEntity, String pdfFilePath) throws UnrecoverableKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        signNpoSeal(npoEntity, pdfFilePath, "", pdfFilePath);
+        if (npoUserEntity != null) {
+            signNotarySeal(npoEntity, npoUserEntity, pdfFilePath, "", pdfFilePath);
+        } else {
+            logger.error("*** " + System.currentTimeMillis() + " [signNotarySeal]区块链公证书数据接收 没有取得公证员信息，无法添加带有公证员CA证书的人名章");
+            return;
+        }
+    }
+
+    /**
+     * 电子公证书(PDF)签章
+     *
+     * @param pdfFilePath        需要签章的PDF文件的路径
+     * @param signFileTargetPath 签章后的PDF的保存路径路径
+     */
+    public static void signSeal(NpoEntity npoEntity, NpoUserEntity npoUserEntity, String pdfFilePath, String signFileTargetPath) throws UnrecoverableKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        signNpoSeal(npoEntity, pdfFilePath, "", signFileTargetPath);
+        signNotarySeal(npoEntity, npoUserEntity, pdfFilePath, "", signFileTargetPath);
+    }
+
+    /**
+     * 电子公证书(PDF)签章-公证处公章
+     * @param npoEntity
+     * @param pdfFilePath 需要签章的PDF文件的路径
+     * @param ownerpwd 需要签章的PDF文件的密码
+     * @param signFileTargetPath 签章后的PDF的保存路径路径
+     */
+    private static void signNpoSeal(NpoEntity npoEntity, String pdfFilePath, String ownerpwd, String signFileTargetPath) throws UnrecoverableKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        String npo_name = npoEntity.getNpoName();
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"), Locale.CHINA);
+        //logger.info("############### 开始签名[" + DateUtil.getStrDateTime() + "]");
+        //logger.info("## 签名文件路径: " + pdfFilePath);
+        //logger.info("## 签名文件名: " + fileName);
+        //String rootPath = BjzxSignSeal.class.getClassLoader().getResource("").getFile().toString();
+        String rootPath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
+        String sepa = File.separator;
+//        rootPath = rootPath.replace("/WEB-INF/classes/", "");
+        String ca = rootPath + "/signseal/bjzx/cfca_bjzx.pfx";                      // CA证书文件地址
+        if(!(new File(ca)).exists()) {
+            logger.error(npoEntity.getNpoName() + " CA证书文件不存在，PATH: " + ca);
+            return;
+        }
+        String capwd = npoEntity.getCapwd();                            // CA证书keystore密码
+        String sealWatermarImg = rootPath + npoEntity.getNpoSeal();     // 签章显示图片
+        String sealLayer = rootPath + "/signseal/bjzx/bjzx_seal_area.png";                     // 签章显示图片
+        int offsetX = 52;    // 图章图片右下角坐标点向右的偏移量，值越大越往右
+        int offsetY = 74;    // 图章图片右下角坐标点向上的偏移量，值越大越往下
+        int width = 128;      // 图章的宽度
+        int height = 128;     // 图章的高度
+        CertEntity certEntity = SignPDFUtil.getCertInfo(ca, "cfca1234");
+        // 封装签章信息
+        SignatureEntity signatureEntity = new SignatureEntity();
+        // signEntity.setPage(2); 不设置，自动在最后一页签
+        signatureEntity.setReason(signReason);       // 签名原因
+        signatureEntity.setLocation(npoEntity.getAddr());
+        signatureEntity.setFieldName(npo_name);
+        // 签章图片
+        signatureEntity.setSealAreaImg(sealLayer);
+        signatureEntity.setSealWatermarImg(sealWatermarImg);
+//        signatureEntity.setPostKeyword(EntznPDFUtils.SEAL_SIGN_POSITION_KEYWORD);  // 查找签章位置的关键字
+        signatureEntity.setOffsetX(offsetX);     // 图章图片右下角坐标点向右的偏移量，值越大越往右
+        signatureEntity.setOffsetY(offsetY);      // 图章图片右下角坐标点向上的偏移量，值越大越往下
+        signatureEntity.setWidth(width);       // 图章的宽度
+        signatureEntity.setHeight(height);      // 图章的高度
+        //signatureEntity.setProvider("");
+        signatureEntity.setPk(certEntity.getPrivateKey());
+        signatureEntity.setChain(certEntity.getCertificateChain());
+        signatureEntity.setCertificationLevel(PdfSignatureAppearance.NOT_CERTIFIED);
+        signatureEntity.setDigestAlgorithm(DigestAlgorithms.SHA256); // SHA1
+        signatureEntity.setSignDate(calendar); // 签名时间
+        signatureEntity.setOwnerpwd(ownerpwd);//所有者密码
+        // 表现形式：仅描述，签章者和描述，图片和描述，仅图片
+        // DESCRIPTION, NAME_AND_DESCRIPTION, GRAPHIC_AND_DESCRIPTION, GRAPHIC
+        signatureEntity.setRenderingMode(PdfSignatureAppearance.RenderingMode.GRAPHIC);
+        // 运行测试
+        SignPDFUtil signPDFUtil = new SignPDFUtil();
+        // 签章后的pdf路径
+        signPDFUtil.sign(pdfFilePath, signFileTargetPath, signatureEntity);
+    }
+
+    /**
+     * 添加公证员人名章
+     *
+     * @param pdfFilePath        需要签章的PDF文件的路径
+     * @param ownerpwd           需要签章的PDF文件的密码
+     * @param signFileTargetPath 签章后的PDF的保存路径路径
+     */
+    private static boolean signNotarySeal(NpoEntity npoEntity, NpoUserEntity npoUserEntity, String pdfFilePath, String ownerpwd, String signFileTargetPath) throws UnrecoverableKeyException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        String notaryName = "11";// npoUserEntity.getRealName();
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Shanghai"), Locale.CHINA);
+        //logger.info("############### 开始签名[" + DateUtil.getStrDateTime() + "]");
+        //logger.info("## 签名文件路径: " + pdfFilePath);
+        //logger.info("## 签名文件名: " + fileName);
+//        String rootPath = BjzxSignSeal.class.getClassLoader().getResource("").getFile();
+        String rootPath = ClassUtils.getDefaultClassLoader().getResource("").getPath();
+//        rootPath = rootPath.replace("/WEB-INF/classes/", "");
+        String ca = rootPath + npoUserEntity.getCa();    // CA证书文件地址
+        String capwd = npoUserEntity.getCapwd();         // CA证书keystore密码
+        if(!(new File(ca)).exists()) {
+            logger.error(npoEntity.getNpoName() + " " + npoUserEntity.getRealName() + " CA证书文件不存在，PATH: " + ca);
+            return false;
+        }
+//        String personal_seal = rootPath + npoUserEntity.getPersonalSeal();       // 签章显示图片
+//        if(!(new File(personal_seal)).isFile()) {
+//            logger.error("#### 公证员人名章不存在：");
+//            logger.error("## 公证员：" + npoUserEntity.getRealName());
+//            logger.error("## 人名章：" + npoUserEntity.getPersonalSeal());
+//        }
+
+        String sealLayer = rootPath + "/signseal/bjzx/bjzx_seal_area.png";                                 // 电子签章的透明图层
+        int offsetX = 60;       // 图章图片右下角坐标点向右的偏移量，值越大越往右
+        int offsetY = -52;      // 图章图片右下角坐标点向上的偏移量，值越大越往下
+        int width = 212;        // 图章的宽度
+        int height = 128;       // 图章的高度
+        // 封装签章信息
+        SignatureEntity signatureEntity = new SignatureEntity();
+        // signEntity.setPage(2); 不设置，自动在最后一页签
+        signatureEntity.setReason(signReason);       // 签名原因
+        signatureEntity.setLocation(npoEntity.getAddr());
+        signatureEntity.setFieldName(notaryName);
+        // 签章图片
+        signatureEntity.setSealAreaImg(sealLayer);
+//        signatureEntity.setSealWatermarImg(personal_seal);
+//        signatureEntity.setPostKeyword(EntznPDFUtils.SEAL_SIGN_POSITION_KEYWORD);  // 查找签章位置的关键字
+        signatureEntity.setOffsetX(offsetX);      // 图章图片右下角坐标点向右的偏移量，值越大越往右
+        signatureEntity.setOffsetY(offsetY);      // 图章图片右下角坐标点向上的偏移量，值越大越往下
+        signatureEntity.setWidth(width);          // 图章的宽度
+        signatureEntity.setHeight(height);        // 图章的高度
+        //signatureEntity.setProvider("");        // 签名算法供应者
+        if((new File(ca)).isFile()) {
+            CertEntity certEntity = SignPDFUtil.getCertInfo(ca, capwd);
+            signatureEntity.setPk(certEntity.getPrivateKey());
+            signatureEntity.setChain(certEntity.getCertificateChain());
+        } else {
+            logger.error("#### 公证员CA路径不正确：");
+            logger.error("## 公证员姓名：" + npoUserEntity.getRealName());
+            logger.error("## CA路径：" + ca);
+        }
+
+        signatureEntity.setCertificationLevel(PdfSignatureAppearance.NOT_CERTIFIED);
+        signatureEntity.setDigestAlgorithm(DigestAlgorithms.SHA256); // SHA1
+        signatureEntity.setSignDate(calendar); // 签名时间
+        signatureEntity.setOwnerpwd(ownerpwd);//所有者密码
+        // 表现形式：仅描述，签章者和描述，图片和描述，仅图片
+        // DESCRIPTION, NAME_AND_DESCRIPTION, GRAPHIC_AND_DESCRIPTION, GRAPHIC
+        signatureEntity.setRenderingMode(PdfSignatureAppearance.RenderingMode.GRAPHIC);
+        // 运行测试
+        SignPDFUtil signPDFUtil = new SignPDFUtil();
+        // 签章后的pdf路径
+        signPDFUtil.sign(pdfFilePath, signFileTargetPath, signatureEntity);
+        return true;
+    }
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.executiontask.dao.SumDao">
+
+
+    <select id="getNotarizationBankBusinessUserSum"
+            parameterType="com.lxyer.base.modules.executiontask.vo.ExecutionRecordSearchVo"
+            resultType="com.lxyer.base.modules.executiontask.entity.BankBusinessUserUpdateStatisticsVo">
+        SELECT
+        business.bank_id as bankId,
+        business.bank_business_id as bankBusinessId,
+        notarization.user_id as userId,
+        loan_amount as notarizationAmount,
+        1 as notarizationCount
+        FROM
+        business business
+        left join notarization notarization on business.id = notarization.business_id
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            business.notarization_status = '1'
+            <if test="executionTimeFrom != null">
+                AND business.modified_time &gt;= #{executionTimeFrom}
+            </if>
+            <if test="executionTimeTo != null">
+                AND business.modified_time &lt; #{executionTimeTo}
+            </if>
+        </trim>
+    </select>
+    <select id="getemailSum"
+            resultType="com.lxyer.base.modules.executiontask.entity.BaseEmailEntity">
+        SELECT
+            bank_code AS bankCode,
+            bank_name AS bankName,
+            bank_business_code AS bankBusinessCode,
+            bank_business_name AS bankBusinessName,
+            count(*) AS sentEmailNum,
+            (
+                SELECT
+                    count(*)
+                FROM
+                    email
+                WHERE
+                    email.bank_code = bankCode
+                AND email.bank_business_code = bankBusinessCode
+                AND email. STATUS = '1'
+            ) AS notificationNum
+        FROM
+            email
+        GROUP BY
+            bank_code,
+            bank_name,
+            bank_business_code,
+            bank_business_name
+    </select>
+
+</mapper>

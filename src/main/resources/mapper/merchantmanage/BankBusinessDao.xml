@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.merchantmanage.bankbusiness.dao.BankBusinessDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.merchantmanage.bankbusiness.entity.BankBusinessEntity"
+               id="bankBusinessMap">
+        <result property="id" column="id"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="businessName" column="business_name"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+    </resultMap>
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.merchantmanage.bankbusiness.entity.BankBusinessListEntity"
+               id="bankBusinessListMap">
+        <result property="id" column="id"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="businessName" column="business_name"/>
+        <result property="businessNoticeStatus" column="business_notice_status"/>
+        <result property="debtNoticeStatus" column="debt_notice_status"/>
+    </resultMap>
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.merchantmanage.bankbusiness.entity.BankBusinessStatisticsEntity"
+               id="bankBusinessStatisticsMap">
+        <result property="id" column="id"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="businessName" column="business_name"/>
+        <result property="totalMoney" column="total_money"/>
+        <result property="businessAmount" column="business_amount"/>
+        <result property="handlingAmount" column="handling_amount"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             bank_id ,             business_name ,             user_id ,             user_name ,             creator_id ,             editor_id ,             created_time ,             modified_time         </sql>
+
+
+    <select id="queryPage"
+            parameterType="com.lxyer.base.modules.merchantmanage.bankbusiness.vo.BankBusinessSearchVo"
+            resultMap="bankBusinessListMap">
+        SELECT
+        id,
+        bank_id,
+        business_name,
+        CASE
+        WHEN ( SELECT count(1) FROM bank_business_template WHERE bank_business_id = bank_business.id AND tpl_type = '1'
+        ) > 0 THEN '1'
+        ELSE '0' END AS business_notice_status,
+        CASE
+        WHEN ( SELECT count(1) FROM bank_business_template WHERE bank_business_id = bank_business.id AND tpl_type = '2'
+        ) > 0 THEN '1'
+        ELSE '0' END AS debt_notice_status
+        FROM
+        bank_business
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="bankId != null">AND `bank_id` = #{bankId}</if>
+            <if test="businessName != null">AND `business_name` like concat('%',#{businessName},'%')</if>
+        </trim>
+    </select>
+
+    <select id="businessStatistics" resultMap="bankBusinessStatisticsMap">
+        SELECT
+            id,
+            bank_id,
+            business_name,
+            IFNULL(
+                (
+                    SELECT
+                        sum(loan_amount)
+                    FROM
+                        business
+                    WHERE
+                        bank_business_id = bank_business.id
+                    AND bank_id = bank_business.bank_id
+                ),
+                0
+            ) AS total_money,
+            (
+                SELECT
+                    count(1)
+                FROM
+                    business
+                WHERE
+                    bank_business_id = bank_business.id
+                AND bank_id = bank_business.bank_id
+            ) AS business_amount,
+            (
+                SELECT
+                    count(1)
+                FROM
+                    notarization
+                LEFT JOIN business ON notarization.business_id = business.id
+                WHERE
+                    business.bank_business_id = bank_business.id
+                AND business.bank_id = bank_business.bank_id
+            ) AS handling_amount
+        FROM
+            bank_business
+        WHERE
+            bank_id = #{bankId}
+    </select>
+
+
+</mapper>

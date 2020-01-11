@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.email.dao.BaseEmailDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.email.entity.BaseEmailEntity" id="emailMap">
+        <result property="id" column="id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="businessType" column="business_type"/>
+        <result property="bankCode" column="bank_code"/>
+        <result property="bankName" column="bank_name"/>
+        <result property="bankBusinessCode" column="bank_business_code"/>
+        <result property="bankBusinessName" column="bank_business_name"/>
+        <result property="fromWho" column="from_who"/>
+        <result property="sender" column="sender"/>
+        <result property="toWho" column="to_who"/>
+        <result property="receiver" column="receiver"/>
+        <result property="subject" column="subject"/>
+        <result property="content" column="content"/>
+        <result property="attachments" column="attachments"/>
+        <result property="status" column="status"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             business_id ,             business_type ,             bank_code ,             bank_name ,             bank_business_code ,             bank_business_name ,             from_who ,             sender ,             to_who ,             receiver ,             subject ,             content ,             attachments ,             status ,             creator_id ,             editor_id ,             created_time ,             modified_time         </sql>
+
+
+    <select id="queryPage" parameterType="com.lxyer.base.modules.email.vo.BaseEmailSearchVo" resultMap="emailMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM email
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="businessId != null">AND `id` = #{id}</if>
+            <if test="businessId != null">AND `business_id` = #{businessId}</if>
+            <if test="businessType != null">AND `business_type` = #{businessType}</if>
+            <if test="bankCode != null">AND `bank_code` = #{bankCode}</if>
+            <if test="bankBusinessCode != null">AND `bank_business_code` = #{bankBusinessCode}</if>
+            <if test="emailNum != null">AND (`from_who` = #{emailNum} OR `to_who` = #{emailNum})</if>
+            <if test="sender != null">AND `sender` = #{sender}</if>
+            <if test="receiver != null">AND `receiver` = #{receiver}</if>
+            <if test="status != null">AND `status` = #{status}</if>
+            <if test="postTimeFrom != null">AND `created_time` &gt;= #{postTimeFrom}</if>
+            <if test="postTimeTo!= null">AND `created_time` &lt;= #{postTimeTo}</if>
+        </trim>
+    </select>
+
+
+</mapper>

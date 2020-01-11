@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.businesslog.dao.BusinessLogDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.businesslog.entity.BusinessLogEntity" id="businessLogMap">
+                    <result property="id" column="id"/>
+                    <result property="businessId" column="business_id"/>
+                    <result property="method" column="method"/>
+                    <result property="params" column="params"/>
+                    <result property="remark" column="remark"/>
+                    <result property="time" column="time"/>
+                    <result property="ip" column="ip"/>
+                    <result property="creatorId" column="creator_id"/>
+                    <result property="createdTime" column="created_time"/>
+                    <result property="editorId" column="editor_id"/>
+                    <result property="modifiedTime" column="modified_time"/>
+            </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             business_id ,             method ,             params ,             remark ,             time ,             ip ,             creator_id ,             created_time ,             editor_id ,             modified_time         </sql>
+
+
+    <select id="queryPage" parameterType="com.lxyer.base.modules.businesslog.vo.BusinessLogSearchVo" resultMap="businessLogMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM business_log
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+                                                                                                    <if test="businessId != null">AND `business_id` = #{businessId} </if>
+                                                                                                            <if test="method != null">AND `method` = #{method} </if>
+                                                                                                            <if test="params != null">AND `params` = #{params} </if>
+                                                                                                            <if test="remark != null">AND `remark` = #{remark} </if>
+                                                                                                            <if test="time != null">AND `time` = #{time} </if>
+                                                                                                            <if test="ip != null">AND `ip` = #{ip} </if>
+                                                                                                            <if test="creatorId != null">AND `creator_id` = #{creatorId} </if>
+                                                                                                            <if test="createdTime != null">AND `created_time` = #{createdTime} </if>
+                                                                                                            <if test="editorId != null">AND `editor_id` = #{editorId} </if>
+                                                                                                            <if test="modifiedTime != null">AND `modified_time` = #{modifiedTime}</if>
+                                                        </trim>
+    </select>
+
+
+
+
+</mapper>

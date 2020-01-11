@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=" utf-8"/>
+    <style type="text/css">
+        * {
+            margin: 0;
+        }
+
+        body {
+            width: 594px;
+            margin: 0 auto;
+            font-size: 17px;
+        }
+
+        .title {
+            font-size: 22px;
+            width: 100%;
+            height: 80px;
+            text-align: center;
+            line-height: 80px;
+        }
+
+        .title_div {
+            width: 100%;
+            height: 80px;
+            line-height: 80px;
+        }
+
+
+        .div_print p {
+            width: 100%;
+            line-height: 35px;
+            min-height: 35px;
+            font-weight: 400;
+        }
+
+        .div_print2 p {
+            width: 100%;
+            line-height: 35px;
+            min-height: 35px;
+            font-weight: 400;
+            text-indent: 2em;
+        }
+
+        .underlineBlock {
+            height: 18px;
+            line-height: 18px;
+            display: inline-block;
+            min-width: 10px;
+            border-bottom: 1px solid #000000;
+        }
+
+        .underlineBlock2 {
+            line-height: 35px;
+            min-width: 50px;
+            border-bottom: 1px solid #000000;
+            font-weight: 600;
+        }
+
+        .underlineRed {
+            height: 18px;
+            line-height: 18px;
+            display: inline-block;
+            min-width: 50px;
+            color: red;
+            border-bottom: 1px solid red;
+        }
+
+        .underlineRed2 {
+            height: 18px;
+            line-height: 18px;
+            min-width: 50px;
+            color: red;
+            border-bottom: 1px solid red;
+        }
+
+        .radio {
+            height: 60px;
+            margin-top: 10px;
+            padding-left: 20px;
+            position: relative;
+
+        }
+
+        .radio span {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .radio span:nth-child(2) {
+            margin-right: 25px;
+        }
+
+        .radio span:nth-child(4) {
+            height: 15px;
+            width: 15px;
+            border-radius: 50%;
+            border: 1px solid #222222;
+            position: absolute;
+            left: 103px;
+            top: 4px;
+        }
+
+        .addr {
+            border: 1px solid #000000;
+            width: 632px;
+            height: auto;
+            margin-top: 30px;
+        }
+
+        .addr .addrTitle {
+            font-size: 22px;
+            width: 100%;
+            height: 80px;
+            text-align: center;
+            line-height: 80px;
+        }
+
+        .addrContent {
+            border-top: 1px solid #000000;
+            width: 632px;
+            /**垂直居中**/
+            align-items:center; display: -webkit-flex;
+            /**水平居中**/
+            justify-content:center; display: -webkit-flex;
+        }
+
+        .addrContent:after {
+            display: block;
+            clear: both;
+            content: "";
+            visibility: hidden;
+            height: 0
+        }
+
+        .addrContent {
+            zoom: 1
+        }
+
+        .addrContentL, .addrContentR {
+            display: inline-block;
+        }
+
+        .addrContentL {
+            width:13%;
+            text-align: center;
+            height: 100%;
+        }
+
+        .addrContentR {
+            width: 83%;
+            padding: 0 1%;
+            border-left: 1px solid #000000;
+            height: 100%;
+        }
+
+        .addrContentL .addrContentR_text, .addrContentR .addrContentR_text {
+            height: 110px;
+            line-height: 110px;
+            width: 100%;
+        }
+
+    </style>
+</head>
+
+<body style=" font-family:FangSong">
+<div id="div_print">
+    <!--电子询问记录start-->
+    <div class="div_print">
+        <div class="title">电子问询记录</div>
+        <div class="title_div">借款人:</div>
+        <p>1.您向贷款人<span th:text="${lenderName}"/>申请借款人民币<span class="underlineBlock"><span th:text="${loanAmount}"/></span>元，签署了电子版的《经营快贷借款合同》（包含附件：《提款通知书》），并填写了公证申请表，向北京市中信公证处对所签《经营快贷借款合同》申请办理具有强制执行效力的债权文书公证，以上操作是否为您本人亲自操作？
+        </p>
+        <div class="radio">
+            <span>是</span><span>●</span><span>否</span><span></span>
+        </div>
+        <p>2.此笔借款的金额为<span class="underlineBlock"><span th:text="${loanAmount}"/></span>元，期限为<span class="underlineBlock"><span th:text="${loanTerm}"/></span>个月(实际借款日以借款收据或者划款凭证为准)，<span th:text="${lpr}"/>您是否明确？</p>
+        <div class="radio">
+            <span>是</span><span>●</span><span>否</span><span></span>
+        </div>
+        <p>3.本次借款款项、借款利息的支付和还款均通过合同约定的账户进行，借款人应在借款到期日之前将足额的还款资金存入约定账户【户名：<span class="underlineBlock"><span th:text="${recvAccName}"/></span>，账号：<span
+                class="underlineBlock"><span th:text="${recvAccNo}"/></span>，开户行：<span class="underlineBlock"><span th:text="${recvAccOpenBank}"/></span>】，您是否明确？</p>
+        <div class="radio">
+            <span>是</span><span>●</span><span>否</span><span></span>
+        </div>
+        <p>4.您对《经营快贷借款合同》中的强制执行公证条款的内容是否明确？</p>
+        <div class="radio">
+            <span>是</span><span>●</span><span>否</span><span></span>
+        </div>
+        <p>5.若借款人不能或不能完全履行《经营快贷借款合同》约定的还款义务，贷款人或其代理人，即可向公证机关申请出具执行证书，并可持该执行证书及原公证书直接向相关法院申请强制执行。您对这一法律后果是否明确？</p>
+        <div class="radio">
+            <span>是</span><span>●</span><span>否</span><span></span>
+        </div>
+        <p>6.公证机构可以在发生下列情形之一时，依据贷款人单方所提供的证明材料依法出具《执行证书》：</p>
+        <p>（1）公证机构的承办公证员在依照《债务履行核实方式及送达地址确认书》上任意两种方式通知借款人，仍旧无法取得联系的；</p>
+        <p>（2）借款人对贷款人提供的证明材料有异议，但在接到承办公证员的通知后三日内不能提供相反证据或提供的相反证据不充分的；</p>
+        <p>（3）借款人对贷款人提供的证明材料没有异议的。 </p>
+        <p>您是否明白？</p>
+        <div class="radio">
+            <span>是</span><span>●</span><span>否</span><span></span>
+        </div>
+    </div>
+    <!--电子询问记录end-->
+</div>
+</body>
+</html>

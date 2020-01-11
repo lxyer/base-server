@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.notarizationapply.certificatetemplate.dao.CertificateTemplateDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap
+            type="com.lxyer.base.modules.notarizationapply.certificatetemplate.entity.CertificateTemplateEntity"
+            id="certificateTemplateMap">
+        <result property="id" column="id"/>
+        <result property="tplType" column="tpl_type"/>
+        <result property="tplName" column="tpl_name"/>
+        <result property="tplContent" column="tpl_content"/>
+        <result property="remark" column="remark"/>
+        <result property="valid" column="valid"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             tpl_type ,             tpl_name ,             tpl_content ,             remark ,             valid ,             creator_id ,             editor_id ,             created_time ,             modified_time         </sql>
+
+
+    <select id="queryPage"
+            parameterType="com.lxyer.base.modules.notarizationapply.certificatetemplate.vo.CertificateTemplateSearchVo"
+            resultMap="certificateTemplateMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM certificate_template
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="tplType != null">AND `tpl_type` = #{tplType}</if>
+            <if test="tplName != null">AND `tpl_name` = #{tplName}</if>
+            <if test="tplContent != null">AND `tpl_content` = #{tplContent}</if>
+            <if test="remark != null">AND `remark` = #{remark}</if>
+            <if test="valid != null">AND `valid` = #{valid}</if>
+            <if test="creatorId != null">AND `creator_id` = #{creatorId}</if>
+            <if test="editorId != null">AND `editor_id` = #{editorId}</if>
+            <if test="createdTime != null">AND `created_time` = #{createdTime}</if>
+            <if test="modifiedTime != null">AND `modified_time` = #{modifiedTime}</if>
+        </trim>
+    </select>
+    <select id="queryTpl"
+            parameterType="com.lxyer.base.modules.notarizationapply.certificatetemplate.vo.CertificateTemplateSearchTplVo"
+            resultMap="certificateTemplateMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM certificate_template
+        WHERE
+        `tpl_type` = #{tplType}
+        AND `valid` = '1'
+    </select>
+
+
+</mapper>

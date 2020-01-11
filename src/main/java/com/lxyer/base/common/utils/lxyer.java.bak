@@ -1,0 +1,32 @@
+package com.deepsec.notarization.common.utils;
+
+import com.deepsec.notarization.modules.business.entity2.NpoEntity;
+import com.deepsec.notarization.modules.business.entity2.NpoUserEntity;
+
+public class lxyer {
+    public static void main(String[] args) {
+        try {
+//            PdfUtil.getPdf();
+//            PdfUtil.getHtml("index",null);
+//            System.out.println(JwtUtil.get());
+//            JavaMailSender javaMailSender = new JavaMailSender;
+//            SimpleMailMessage message = new SimpleMailMessage();
+//            message.setFrom("159****2662@163.com");
+//            message.setTo("****@qianxx.com");
+//            message.setSubject("邮件主题");
+//            message.setText("邮件内容");
+//            JavaMailSender.send(message);
+//            SignUtil.sign("/Users/deepsec/IdeaProjects/notarization/src/main/resources/templates/bbb.pdf",
+//                    "/Users/deepsec/IdeaProjects/notarization/src/main/resources/templates/bbb1.pdf");
+//            MailBean mailBean = new MailBean();
+//            mailBean.setContent("lxyer");
+//            mailBean.setSubject("标题");
+//            mailBean.setRecipient("489322130@qq.com");
+//            MailUtil.sendTemplateMail(mailBean);
+            BjzxSignSeal.signSeal(new NpoEntity (),new NpoUserEntity(),"/Users/deepsec/IdeaProjects/notarization/src/main/resources/templates/bb.pdf","/Users/deepsec/IdeaProjects/notarization/src/main/resources/templates/bb-1.pdf");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

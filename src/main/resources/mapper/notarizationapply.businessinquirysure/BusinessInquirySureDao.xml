@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.notarizationapply.businessinquirysure.dao.BusinessInquirySureDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap
+            type="com.lxyer.base.modules.notarizationapply.businessinquirysure.entity.BusinessInquirySureEntity"
+            id="businessInquirySureMap">
+        <result property="id" column="id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="certNo" column="cert_no"/>
+        <result property="inquiry2" column="inquiry_2"/>
+        <result property="inquiry1" column="inquiry_1"/>
+        <result property="inquiry3" column="inquiry_3"/>
+        <result property="inquiry4" column="inquiry_4"/>
+        <result property="inquiry5" column="inquiry_5"/>
+        <result property="inquiry6" column="inquiry_6"/>
+        <result property="inquiry7" column="inquiry_7"/>
+        <result property="inquiry8" column="inquiry_8"/>
+        <result property="inquiry9" column="inquiry_9"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             business_id ,             cert_no ,             inquiry_2 ,             inquiry_1 ,             inquiry_3 ,             inquiry_4 ,             inquiry_5 ,             inquiry_6 ,             inquiry_7 ,             inquiry_8 ,             inquiry_9 ,             creator_id ,             editor_id ,             created_time ,             modified_time         </sql>
+
+
+    <select id="queryPage"
+            parameterType="com.lxyer.base.modules.notarizationapply.businessinquirysure.vo.BusinessInquirySureSearchVo"
+            resultMap="businessInquirySureMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM business_inquiry_sure
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="businessId != null">AND `business_id` = #{businessId}</if>
+            <if test="certNo != null">AND `cert_no` = #{certNo}</if>
+            <if test="inquiry2 != null">AND `inquiry_2` = #{inquiry2}</if>
+            <if test="inquiry1 != null">AND `inquiry_1` = #{inquiry1}</if>
+            <if test="inquiry3 != null">AND `inquiry_3` = #{inquiry3}</if>
+            <if test="inquiry4 != null">AND `inquiry_4` = #{inquiry4}</if>
+            <if test="inquiry5 != null">AND `inquiry_5` = #{inquiry5}</if>
+            <if test="inquiry6 != null">AND `inquiry_6` = #{inquiry6}</if>
+            <if test="inquiry7 != null">AND `inquiry_7` = #{inquiry7}</if>
+            <if test="inquiry8 != null">AND `inquiry_8` = #{inquiry8}</if>
+            <if test="inquiry9 != null">AND `inquiry_9` = #{inquiry9}</if>
+            <if test="creatorId != null">AND `creator_id` = #{creatorId}</if>
+            <if test="editorId != null">AND `editor_id` = #{editorId}</if>
+            <if test="createdTime != null">AND `created_time` = #{createdTime}</if>
+            <if test="modifiedTime != null">AND `modified_time` = #{modifiedTime}</if>
+        </trim>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.notarizationapply.businessremarks.dao.BusinessRemarksDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.notarizationapply.businessremarks.entity.BusinessRemarksEntity"
+               id="businessRemarksMap">
+        <result property="id" column="id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             business_id ,             creator_id ,             editor_id ,             created_time ,             modified_time ,             remark         </sql>
+
+
+    <select id="queryPage"
+            parameterType="com.lxyer.base.modules.notarizationapply.businessremarks.vo.BusinessRemarksSearchVo"
+            resultMap="businessRemarksMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM business_remarks
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="businessId != null">AND `business_id` = #{businessId}</if>
+        </trim>
+        ORDER BY created_time DESC
+    </select>
+
+
+</mapper>

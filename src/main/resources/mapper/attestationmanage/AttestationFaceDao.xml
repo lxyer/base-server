@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.attestationmanage.attestationface.dao.AttestationFaceDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.attestationmanage.attestationface.entity.AttestationFaceEntity"
+               id="faceAttestationMap">
+        <result property="id" column="id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="userPicture" column="user_picture"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="identityCardNo" column="identity_card_no"/>
+        <result property="phoneNo" column="phone_no"/>
+        <result property="email" column="email"/>
+        <result property="addres" column="addres"/>
+        <result property="verifyResult" column="verify_result"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+    </resultMap>
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.attestationmanage.attestation.entity.AttestationEntity"
+               id="attestationMap">
+        <result property="id" column="id"/>
+        <result property="attestationName" column="attestation_name"/>
+        <result property="attestationType" column="attestation_type"/>
+        <result property="attestationResult" column="attestation_result"/>
+        <result property="resultDetails" column="result_details"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             business_id ,             user_picture ,             name ,             sex ,             identity_card_no ,             phone_no ,             email ,             addres ,             verify_result ,             file_name ,             file_path ,             creator_id ,             editor_id ,             created_time ,             modified_time         </sql>
+
+
+    <select id="queryPage"
+            parameterType="com.lxyer.base.modules.attestationmanage.attestationface.vo.AttestationFaceSearchVo"
+            resultMap="faceAttestationMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM attestation_face
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="businessId != null">AND `business_id` = #{businessId}</if>
+            <if test="userPicture != null">AND `user_picture` = #{userPicture}</if>
+            <if test="name != null">AND `name` = #{name}</if>
+            <if test="sex != null">AND `sex` = #{sex}</if>
+            <if test="identityCardNo != null">AND `identity_card_no` = #{identityCardNo}</if>
+            <if test="phoneNo != null">AND `phone_no` = #{phoneNo}</if>
+            <if test="email != null">AND `email` = #{email}</if>
+            <if test="addres != null">AND `addres` = #{addres}</if>
+            <if test="verifyResult != null">AND `verify_result` = #{verifyResult}</if>
+            <if test="fileName != null">AND `file_name` = #{fileName}</if>
+            <if test="filePath != null">AND `file_path` = #{filePath}</if>
+            <if test="creatorId != null">AND `creator_id` = #{creatorId}</if>
+            <if test="editorId != null">AND `editor_id` = #{editorId}</if>
+            <if test="createdTime != null">AND `created_time` = #{createdTime}</if>
+            <if test="modifiedTime != null">AND `modified_time` = #{modifiedTime}</if>
+        </trim>
+    </select>
+
+
+    <select id="queryAttestation"
+            parameterType="com.lxyer.base.modules.attestationmanage.attestation.vo.AttestationSearchVo"
+            resultMap="attestationMap">
+        SELECT
+            id AS id,
+            '人脸识别认证' AS attestation_name,
+            '2' AS attestation_type,
+            CASE
+            WHEN verify_result != '' THEN '1'
+            ELSE '2' END AS attestation_result,
+            CASE
+            WHEN file_name != '' THEN '1'
+            ELSE '2' END AS result_details
+        FROM
+            attestation_face
+        WHERE
+            `business_id` = #{businessId}
+    </select>
+
+
+</mapper>

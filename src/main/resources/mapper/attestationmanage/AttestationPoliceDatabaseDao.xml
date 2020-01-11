@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.attestationmanage.attestationpolicedatabase.dao.AttestationPoliceDatabaseDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap
+            type="com.lxyer.base.modules.attestationmanage.attestationpolicedatabase.entity.AttestationPoliceDatabaseEntity"
+            id="policeDatabaseAttestationMap">
+        <result property="id" column="id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="identityCardNo" column="identity_card_no"/>
+        <result property="nation" column="nation"/>
+        <result property="birthday" column="birthday"/>
+        <result property="addres" column="addres"/>
+        <result property="issuanceAuthority" column="issuance_authority"/>
+        <result property="validityPeriod" column="validity_period"/>
+        <result property="verifyDate" column="verify_date"/>
+        <result property="verifyResult" column="verify_result"/>
+        <result property="similarity" column="similarity"/>
+        <result property="userPictureFour" column="user_picture_four"/>
+        <result property="userPictureThree" column="user_picture_three"/>
+        <result property="userPictureTwo" column="user_picture_two"/>
+        <result property="userPictureOne" column="user_picture_one"/>
+        <result property="identityCardFront" column="identity_card_front"/>
+        <result property="identityCardReverse" column="identity_card_reverse"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+    </resultMap>
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.attestationmanage.attestation.entity.AttestationEntity"
+               id="attestationMap">
+        <result property="id" column="id"/>
+        <result property="attestationName" column="attestation_name"/>
+        <result property="attestationType" column="attestation_type"/>
+        <result property="attestationResult" column="attestation_result"/>
+        <result property="resultDetails" column="result_details"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             business_id ,             name ,             sex ,             identity_card_no ,             nation ,             birthday ,             addres ,             issuance_authority ,             validity_period ,             verify_date ,             verify_result ,             similarity ,             user_picture_four ,             user_picture_three ,             user_picture_two ,             user_picture_one ,             identity_card_front ,             identity_card_reverse ,             creator_id ,             editor_id ,             created_time ,             modified_time         </sql>
+
+
+    <select id="queryPage"
+            parameterType="com.lxyer.base.modules.attestationmanage.attestationpolicedatabase.vo.AttestationPoliceDatabaseSearchVo"
+            resultMap="policeDatabaseAttestationMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM attestation_police_database
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="businessId != null">AND `business_id` = #{businessId}</if>
+            <if test="name != null">AND `name` = #{name}</if>
+            <if test="sex != null">AND `sex` = #{sex}</if>
+            <if test="identityCardNo != null">AND `identity_card_no` = #{identityCardNo}</if>
+            <if test="nation != null">AND `nation` = #{nation}</if>
+            <if test="birthday != null">AND `birthday` = #{birthday}</if>
+            <if test="addres != null">AND `addres` = #{addres}</if>
+            <if test="issuanceAuthority != null">AND `issuance_authority` = #{issuanceAuthority}</if>
+            <if test="validityPeriod != null">AND `validity_period` = #{validityPeriod}</if>
+            <if test="verifyDate != null">AND `verify_date` = #{verifyDate}</if>
+            <if test="verifyResult != null">AND `verify_result` = #{verifyResult}</if>
+            <if test="similarity != null">AND `similarity` = #{similarity}</if>
+            <if test="userPictureFour != null">AND `user_picture_four` = #{userPictureFour}</if>
+            <if test="userPictureThree != null">AND `user_picture_three` = #{userPictureThree}</if>
+            <if test="userPictureTwo != null">AND `user_picture_two` = #{userPictureTwo}</if>
+            <if test="userPictureOne != null">AND `user_picture_one` = #{userPictureOne}</if>
+            <if test="identityCardFront != null">AND `identity_card_front` = #{identityCardFront}</if>
+            <if test="identityCardReverse != null">AND `identity_card_reverse` = #{identityCardReverse}</if>
+            <if test="creatorId != null">AND `creator_id` = #{creatorId}</if>
+            <if test="editorId != null">AND `editor_id` = #{editorId}</if>
+            <if test="createdTime != null">AND `created_time` = #{createdTime}</if>
+            <if test="modifiedTime != null">AND `modified_time` = #{modifiedTime}</if>
+        </trim>
+    </select>
+
+
+    <select id="queryAttestation"
+            parameterType="com.lxyer.base.modules.attestationmanage.attestation.vo.AttestationSearchVo"
+            resultMap="attestationMap">
+        SELECT
+            id AS id,
+            '公安库认证' AS attestation_name,
+            '1' AS attestation_type,
+             CASE
+            WHEN verify_result != '' THEN '1'
+            ELSE '2' END AS attestation_result,
+            CASE
+            WHEN identity_card_front != '' and  identity_card_reverse != '' THEN '1'
+            ELSE '2' END AS result_details
+        FROM
+            attestation_police_database
+        WHERE
+            `business_id` = #{businessId}
+    </select>
+
+
+</mapper>

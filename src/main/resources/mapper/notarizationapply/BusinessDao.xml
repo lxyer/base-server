@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.notarizationapply.business.dao.BusinessDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.notarizationapply.business.entity.BusinessEntity"
+               id="businessMap">
+        <result property="id" column="id"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="bankBusinessId" column="bank_business_id"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+        <result property="businessId" column="business_id"/>
+        <result property="contractNo" column="contract_no"/>
+        <result property="businessType" column="business_type"/>
+        <result property="loanChannel" column="loan_channel"/>
+        <result property="lenderBusiGround" column="lender_busi_ground"/>
+        <result property="lenderChargeMan" column="lender_charge_man"/>
+        <result property="contractSignAddr" column="contract_sign_addr"/>
+        <result property="contractSignDate" column="contract_sign_date"/>
+        <result property="borrowerName" column="borrower_name"/>
+        <result property="loanAmount" column="loan_amount"/>
+        <result property="loanAmountWord" column="loan_amount_word"/>
+        <result property="loanTerm" column="loan_term"/>
+        <result property="rateFloatValue" column="rate_float_value"/>
+        <result property="rateFloatMethod" column="rate_float_method"/>
+        <result property="inconsUseInterest" column="incons_use_interest"/>
+        <result property="overdueInterest" column="overdue_interest"/>
+        <result property="merchantCode" column="merchant_code"/>
+        <result property="recvAccNo" column="recv_acc_no"/>
+        <result property="recvAccName" column="recv_acc_name"/>
+        <result property="recvAccOpenBank" column="recv_acc_open_bank"/>
+        <result property="payAccNo" column="pay_acc_no"/>
+        <result property="payAccName" column="pay_acc_name"/>
+        <result property="payAccOpenBank" column="pay_acc_open_bank"/>
+        <result property="remark" column="remark"/>
+        <result property="applyStatus" column="apply_status"/>
+        <result property="notarizationNo" column="notarization_no"/>
+        <result property="notarizationStatus" column="notarization_status"/>
+        <result property="issuingDate" column="issuing_date"/>
+        <result property="notarizationUserName" column="user_name"/>
+    </resultMap>
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.notarizationapply.business.entity.BusinessEntityList"
+               id="businessMapList">
+        <result property="id" column="id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="contractNo" column="contract_no"/>
+        <result property="lenderChargeMan" column="lender_charge_man"/>
+        <result property="contractSignDate" column="contract_sign_date"/>
+        <result property="borrowerName" column="borrower_name"/>
+        <result property="loanAmount" column="loan_amount"/>
+        <result property="applyStatus" column="apply_status"/>
+        <result property="notarizationNo" column="notarization_no"/>
+        <result property="notarizationStatus" column="notarization_status"/>
+        <result property="issuingDate" column="issuing_date"/>
+        <result property="userName" column="user_name"/>
+    </resultMap>
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.notarizationapply.business.entity.SynchroBusinessEntity"
+               id="synchroBusinessEntity">
+        <result property="id" column="id"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="bankName" column="bank_name"/>
+        <result property="bankBusinessId" column="bank_business_id"/>
+        <result property="bankBusinessName" column="bank_business_name"/>
+        <result property="openStatus" column="open_status"/>
+        <result property="businessHandleAmount" column="business_handle_amount"/>
+        <result property="notarizationBounceRate" column="notarization_bounce_rate"/>
+        <result property="businessTotalSum" column="business_total_sum"/>
+        <result property="notarizationCount" column="notarization_count"/>
+    </resultMap>
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.notarizationapply.business.entity.LenderInfoEntity"
+               id="lenderInfoEntity">
+        <result property="id" column="id"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="customerNo" column="customer_no"/>
+        <result property="customerCertType" column="customer_cert_type"/>
+        <result property="customerCertNo" column="customer_cert_no"/>
+        <result property="customerCellphone" column="customer_cellphone"/>
+        <result property="customerAddres" column="customer_addres"/>
+        <result property="agentName" column="agent_name"/>
+        <result property="agentPosition" column="agent_position"/>
+        <result property="phoneNo" column="phone_no"/>
+        <result property="email" column="email"/>
+        <result property="recvAccNo" column="recv_acc_no"/>
+        <result property="pushStatus" column="push_status"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List_All">
+        id ,             bank_id ,             bank_business_id ,             creator_id ,             editor_id ,             created_time ,             modified_time ,             business_id ,             contract_no ,             business_type ,             loan_channel ,             lender_busi_ground ,             lender_charge_man ,             contract_sign_addr ,              contract_sign_date,             borrower_name ,             loan_amount ,             loan_amount_word ,             loan_term ,             rate_float_value ,             rate_float_method ,             incons_use_interest ,             overdue_interest ,             merchant_code ,             recv_acc_no ,             recv_acc_name ,             recv_acc_open_bank ,             pay_acc_no ,             pay_acc_name ,             pay_acc_open_bank ,             remark ,             apply_status ,             notarization_no ,             notarization_status ,             issuing_date         </sql>
+
+    <sql id="Base_Column_List">
+        business.id ,            business.business_id ,             business.contract_no ,             business.lender_charge_man ,              business.contract_sign_date,             business.borrower_name ,             business.loan_amount ,             business.apply_status ,             business.notarization_no ,             business.notarization_status ,             business.issuing_date         </sql>
+    <sql id="Base_Column_Synchro">
+        id ,             bank_id ,             bank_name ,             bank_business_id ,             bank_business_name ,             open_status ,             business_handle_amount ,             notarization_bounce_rate ,             business_total_sum ,             creator_id ,             editor_id ,             created_time ,             modified_time         </sql>
+
+
+    <select id="queryPage"
+            parameterType="com.lxyer.base.modules.notarizationapply.business.vo.BusinessSearchVo"
+            resultMap="businessMapList">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        notarization.user_name as user_name
+        FROM business business
+        LEFT JOIN notarization notarization ON business.id = notarization.business_id
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="bankId != null">AND business.bank_id = #{bankId}</if>
+            <if test="bankBusinessId != null">AND business.bank_business_id = #{bankBusinessId}</if>
+            <if test="businessId != null">AND business.business_id = #{businessId}</if>
+            <if test="contractNo != null">AND business.contract_no = #{contractNo}</if>
+            <if test="businessType != null">AND business.business_type = #{businessType}</if>
+            <if test="lenderChargeMan != null">AND business.lender_charge_man = #{lenderChargeMan}</if>
+            <if test="borrowerName != null">AND business.borrower_name = #{borrowerName}</if>
+            <if test="applyStatus != null">AND business.apply_status = #{applyStatus}</if>
+            <if test="notarizationNo != null">AND business.notarization_no = #{notarizationNo}</if>
+            <if test="notarizationStatus != null">AND business.notarization_status = #{notarizationStatus}</if>
+            <if test="issuingDateStart != null">
+                AND business.issuing_date &gt;= #{issuingDateStart,jdbcType=TIMESTAMP}
+            </if>
+            <if test="issuingDateEnd != null">
+                and business.issuing_date &lt;= #{issuingDateEnd,jdbcType=TIMESTAMP}
+            </if>
+            <if test="contractSignDateStart != null">
+                AND business.contract_sign_date &gt;= #{contractSignDateStart,jdbcType=TIMESTAMP}
+            </if>
+            <if test="contractSignDateEnd != null">
+                and business.contract_sign_date &lt;= #{contractSignDateEnd,jdbcType=TIMESTAMP}
+            </if>
+            <if test="userId != null">
+                and notarization.user_id = #{userId}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getBusinessId" resultType="Long">
+        SELECT
+        id
+        FROM business business
+        WHERE
+        business.contract_no = #{contractNo}
+    </select>
+    <select id="queryDataSynchro" resultMap="synchroBusinessEntity">
+        SELECT
+            bank_id,
+            (
+                SELECT
+                    customer_name
+                FROM
+                    bank
+                WHERE
+                    id = business.bank_id
+            ) AS bank_name,
+            bank_business_id,
+            (
+                SELECT
+                    business_name
+                FROM
+                    bank_business
+                WHERE
+                    id = business.bank_business_id
+                AND bank_id = business.bank_id
+            ) AS bank_business_name,
+            count(id) AS business_handle_amount,
+            '公证跳出率' AS notarization_bounce_rate,
+            SUM(loan_amount) AS business_total_sum,
+            (
+                SELECT
+                    count(1)
+                FROM
+                    notarization notarization
+                LEFT JOIN business business_n ON notarization.business_id = business_n.id
+                WHERE
+                    business_n.bank_id = business.bank_id
+                AND business_n.bank_business_id = business.bank_business_id
+            ) AS notarization_count
+        FROM
+            business
+        GROUP BY
+            bank_id,
+	        bank_business_id
+    </select>
+    <select id="queryLenderInfo"
+            resultMap="lenderInfoEntity">
+        SELECT
+            business.id AS id,
+            bank.customer_name AS customer_name,
+            bank_agent.agent_name AS agent_name,
+            '法人' AS agent_position,
+            bank_agent.phone_no AS phone_no,
+            bank.customer_cert_type AS customer_cert_type,
+            bank.customer_cert_no AS customer_cert_no,
+            bank.customer_cellphone AS customer_cellphone,
+            bank.customer_addres AS customer_addres,
+            bank_agent.email AS email,
+            '' AS post_code,
+            business.recv_acc_no AS recv_acc_no,
+            business.recv_acc_name AS recv_acc_name,
+            IFNULL(business.push_status, 0) AS push_status
+        FROM
+            business business
+        LEFT JOIN bank bank ON business.bank_id = bank.id
+        LEFT JOIN bank_agent bank_agent ON bank.id = bank_agent.bank_id
+        WHERE business.id = #{bussinessId}
+    </select>
+
+
+</mapper>

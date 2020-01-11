@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.notarizationapply.borrower.dao.BorrowerDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.notarizationapply.borrower.entity.BorrowerEntity"
+               id="borrowerMap">
+        <result property="id" column="id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+        <result property="borrowerName" column="borrower_name"/>
+        <result property="sex" column="sex"/>
+        <result property="ethnic" column="ethnic"/>
+        <result property="certificateType" column="certificate_type"/>
+        <result property="certificateNo" column="certificate_no"/>
+        <result property="phoneNo" column="phone_no"/>
+        <result property="wechatNo" column="wechat_no"/>
+        <result property="bankCardNo" column="bank_card_no"/>
+        <result property="bankCardBank" column="bank_card_bank"/>
+        <result property="postalCode" column="postal_code"/>
+        <result property="fax" column="fax"/>
+        <result property="email" column="email"/>
+        <result property="otherDeliveryMethod" column="other_delivery_method"/>
+        <result property="addres" column="addres"/>
+        <result property="deliveryAddres" column="delivery_addres"/>
+        <result property="pushStatus" column="push_status"/>
+    </resultMap>
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap
+            type="com.lxyer.base.modules.notarizationapply.businessaddresconfirm.entity.BusinessAddresConfirmEntity"
+            id="businessAddresConfirmMap">
+        <result property="id" column="id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+        <result property="phoneNo" column="phone_no"/>
+        <result property="email" column="email"/>
+        <result property="addres" column="addres"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             business_id ,             creator_id ,             editor_id ,             created_time ,             modified_time ,             borrower_name ,             sex ,             ethnic ,             certificate_type ,             certificate_no ,             phone_no ,             wechat_no ,             bank_card_no ,             bank_card_bank ,             postal_code ,             fax ,             email ,             other_delivery_method ,             addres ,             delivery_addres ,             push_status         </sql>
+
+
+    <select id="queryPage"
+            parameterType="com.lxyer.base.modules.notarizationapply.borrower.vo.BorrowerSearchVo"
+            resultMap="borrowerMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM borrower
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="businessId != null">AND `business_id` = #{businessId}</if>
+            <if test="creatorId != null">AND `creator_id` = #{creatorId}</if>
+            <if test="editorId != null">AND `editor_id` = #{editorId}</if>
+            <if test="createdTime != null">AND `created_time` = #{createdTime}</if>
+            <if test="modifiedTime != null">AND `modified_time` = #{modifiedTime}</if>
+            <if test="borrowerName != null">AND `borrower_name` = #{borrowerName}</if>
+            <if test="sex != null">AND `sex` = #{sex}</if>
+            <if test="ethnic != null">AND `ethnic` = #{ethnic}</if>
+            <if test="certificateType != null">AND `certificate_type` = #{certificateType}</if>
+            <if test="certificateNo != null">AND `certificate_no` = #{certificateNo}</if>
+            <if test="phoneNo != null">AND `phone_no` = #{phoneNo}</if>
+            <if test="wechatNo != null">AND `wechat_no` = #{wechatNo}</if>
+            <if test="bankCardNo != null">AND `bank_card_no` = #{bankCardNo}</if>
+            <if test="bankCardBank != null">AND `bank_card_bank` = #{bankCardBank}</if>
+            <if test="postalCode != null">AND `postal_code` = #{postalCode}</if>
+            <if test="fax != null">AND `fax` = #{fax}</if>
+            <if test="email != null">AND `email` = #{email}</if>
+            <if test="otherDeliveryMethod != null">AND `other_delivery_method` = #{otherDeliveryMethod}</if>
+            <if test="addres != null">AND `addres` = #{addres}</if>
+            <if test="deliveryAddres != null">AND `delivery_addres` = #{deliveryAddres}</if>
+            <if test="pushStatus != null">AND `push_status` = #{pushStatus}</if>
+        </trim>
+    </select>
+
+    <select id="queryAddresConfirm"
+            parameterType="com.lxyer.base.modules.notarizationapply.bussinesnotifysure.vo.BusinessNotifySureSearchVo"
+            resultMap="businessAddresConfirmMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM borrower
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="businessId != null">AND `business_id` = #{businessId}</if>
+            <if test="certNo != null">AND `certificate_no` = #{certNo}</if>
+        </trim>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,64 @@
+package com.deepsec.notarization.common.base;
+
+
+
+
+import io.swagger.annotations.ApiModel;
+import org.springframework.http.HttpStatus;
+
+@ApiModel(value = "Response", description = "统一的响应对象")
+public class ResponseData<T> extends BaseResponse {
+	
+	private T data;
+	
+	public ResponseData() {
+		// 这个code默认为500
+		setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+	}
+	
+	public ResponseData<T> ok() {
+		return new ResponseData<T>();
+	}
+	
+	public  ResponseData<T> ok(String msg,T data) {
+		ResponseData<T> r = new ResponseData<T>();
+		r.setCode(HttpStatus.OK.value());
+		r.setMsg(msg);
+		r.setData(data);
+		return r;
+	}
+	public  ResponseData<T> ok(String msg) {
+		ResponseData<T> r = new ResponseData<T>();
+		r.setCode(HttpStatus.OK.value());
+		r.setMsg(msg);
+		return r;
+	}
+	public  ResponseData<String> error() {
+		ResponseData<String> r = new ResponseData<String>();
+		r.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		return r;
+	}
+	
+	public  ResponseData<String> error(String msg) {
+		ResponseData<String> r = new ResponseData<String>();
+		r.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		r.setMsg(msg);
+		return r;
+	}
+	
+	public  ResponseData<String> error(int code, String msg) {
+		ResponseData<String> r = new ResponseData<String>();
+		r.setCode(code);
+		r.setMsg(msg);
+		return r;
+	}
+	
+	public T getData() {
+		return data;
+	}
+	public void setData(T data) {
+		this.data = data;
+	}
+	
+	
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.notarizationapply.notarization.dao.NotarizationDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.notarizationapply.notarization.entity.NotarizationEntity"
+               id="notarizationMap">
+        <result property="id" column="id"/>
+        <result property="businessId" column="business_id"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="editorId" column="editor_id"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="modifiedTime" column="modified_time"/>
+        <result property="certificateNo" column="certificate_no"/>
+        <result property="certificateType" column="certificate_type"/>
+        <result property="certificateStatus" column="certificate_status"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="contractSignDate" column="contract_sign_date"/>
+        <result property="notarizationSignDate" column="notarization_sign_date"/>
+        <result property="notarizationIssueDate" column="notarization_issue_date"/>
+        <result property="fileName" column="file_name"/>
+        <result property="filePath" column="file_path"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             business_id ,             creator_id ,             editor_id ,             created_time ,             modified_time ,             certificate_no ,             certificate_type ,             certificate_status ,             user_id ,             user_name ,             contract_sign_date ,             notarization_sign_date ,             notarization_issue_date ,             file_name ,             file_path         </sql>
+
+
+    <select id="queryPage"
+            parameterType="com.lxyer.base.modules.notarizationapply.notarization.vo.NotarizationSearchVo"
+            resultMap="notarizationMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM notarization
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="businessId != null">AND `business_id` = #{businessId}</if>
+            <if test="creatorId != null">AND `creator_id` = #{creatorId}</if>
+            <if test="editorId != null">AND `editor_id` = #{editorId}</if>
+            <if test="createdTime != null">AND `created_time` = #{createdTime}</if>
+            <if test="modifiedTime != null">AND `modified_time` = #{modifiedTime}</if>
+            <if test="certificateNo != null">AND `certificate_no` = #{certificateNo}</if>
+            <if test="certificateType != null">AND `certificate_type` = #{certificateType}</if>
+            <if test="certificateStatus != null">AND `certificate_status` = #{certificateStatus}</if>
+            <if test="userId != null">AND `user_id` = #{userId}</if>
+            <if test="userName != null">AND `user_name` = #{userName}</if>
+            <if test="contractSignDate != null">AND `contract_sign_date` = #{contractSignDate}</if>
+            <if test="notarizationSignDate != null">AND `notarization_sign_date` = #{notarizationSignDate}</if>
+            <if test="notarizationIssueDate != null">AND `notarization_issue_date` = #{notarizationIssueDate}</if>
+            <if test="fileName != null">AND `file_name` = #{fileName}</if>
+            <if test="filePath != null">AND `file_path` = #{filePath}</if>
+        </trim>
+    </select>
+
+
+</mapper>

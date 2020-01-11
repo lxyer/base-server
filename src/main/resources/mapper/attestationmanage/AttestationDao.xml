@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lxyer.base.modules.attestationmanage.attestation.dao.AttestationDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.lxyer.base.modules.attestationmanage.attestation.entity.AttestationEntity"
+               id="attestationMap">
+        <result property="id" column="id"/>
+        <result property="attestationName" column="attestation_name"/>
+        <result property="attestationType" column="attestation_type"/>
+        <result property="attestationResult" column="attestation_result"/>
+        <result property="resultDetails" column="result_details"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id ,             attestation_name ,             attestation_type ,             attestation_result ,             result_details ,             creator_id ,             editor_id ,             created_time ,             modified_time         </sql>
+
+
+</mapper>

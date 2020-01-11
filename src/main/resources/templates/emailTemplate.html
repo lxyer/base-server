@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<style>
+    .ht_box {
+        width: 80%;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px 40px;
+        box-sizing: border-box;
+    }
+
+    .ht_box h1 {
+        height: 40px;
+        line-height: 40px;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    p.mgbtm6 {
+        margin-bottom: 60px;
+    }
+
+    p.mgtop {
+        margin-top: 20px;
+    }
+
+    p.textIndex {
+        text-indent: 2em;
+    }
+
+    .ht_box p {
+        line-height: 30px;
+        background: #fff;
+        color: #000;
+        font-size: 16px;
+    }
+
+    p {
+        word-wrap: break-word;
+    }
+
+    p.textright {
+        text-align: right;
+    }
+</style>
+<body>
+<div class="ht_box">
+    <h1>网络赋强公证书送达通知</h1>
+    <p class="textIndex mgtop mgbtm6">
+        您于<span th:text="${contractSignDate}"/>通过中国工商银行电子渠道同贷款人<span th:text="${lenderName}"/>签署了《经营快贷借款合同》，并就上述合同在我处办理了赋予强制执行效力的债权文书公证手续，现将电子版公证书以邮件附件形式发给您，解压缩密码为您身份证号码后6位，请查收。
+    </p>
+    <p class="textright">北京市中信公证处</p>
+    <p class="textright mgbtm6"><span th:text="${date}"/></p>
+    <p>
+        地址：中国•
+        <span>北京市西城区阜成门外大街2号</span>
+        ，万通金融中心4层和5层
+    </p>
+    <p>邮政编码：100037</p>
+    <p>电话：<span>010-68442299</span></p>
+    <p>公证员:<span th:text="${greffierName}"/>  电话:<span th:text="${phone}"/></p>
+    <p>传真：<span>010-68442200</span></p>
+    <p>电子邮箱：<span>bjszxgzc@163.com</span></p>
+    <p>网址（http）：<span>www.bjgzc.com</span></p>
+</div>
+</body>
+</html>

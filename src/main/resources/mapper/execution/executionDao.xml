@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxyer.base.modules.execution.dao.DebtVerifyVoDao">
+
+	<select id="queryDebtVerifyInfo" resultType="com.lxyer.base.modules.execution.vo.DebtVerifyVo">
+		select id,business_id as businessId,subject,content,direction,created_time as createdTime,tablename from (
+			select id,business_id,subject,content,'公证处' direction,created_time,'email' tablename from email where business_id=#{businessId,jdbcType=VARCHAR} and business_type='3'
+			union all
+			select id,business_id,'' subject,content,'公证处' direction ,created_time,'short_letter' tablename from short_letter where business_id=#{businessId,jdbcType=VARCHAR} and business_type='3'
+			union all
+			select id,business_id,file_name subject,content,'银行' direction ,created_time,'execution_file' tablename from execution_file where business_id = #{businessId,jdbcType=VARCHAR}
+		)t order by created_time asc
+	</select>
+
+</mapper>
